@@ -1,0 +1,59 @@
+.header {
+  text-align: center;
+  background: #0a0349;
+  border: 3px solid #b7a329;
+  margin: 20px;
+}
+.header h1 {
+  color: white;
+}
+#grid-container {
+  display: flex;
+  margin: 20px;
+  justify-content: space-evenly;
+}
+#grid {
+  height: 500px;
+}
+.algo-details {
+  border: 2px solid #b7a329;
+  background: #0a0349;
+  color: white;
+  font-size: 15px;
+  font-family: monospace;
+  padding: 10px;
+}
+#grid-options {
+  width: 100%;
+  text-align: center;
+}
+
+#grid-options button {
+  padding: 10px;
+  margin: 10px;
+  background: #0a0349;
+  color: white;
+  font-size: 20px;
+  font-family: monospace;
+  border: 4px solid #b7a329;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.mymove {
+  background-color: blue;
+}
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.status {
+  text-align: center;
+  color: #0a0349;
+  font-size: 40px;
+  font-family: monospace;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./bfs.css" />
+    <div class="header">
+      <h1>BFS Algorithm Visualiser</h1>
+    </div>
+    <div id="grid-container">
+      <div id="grid"></div>
+      <div class="algo-details">
+        <h2><u>PseudoCode</u></h2>
+        Input: s as the source node BFS (G, s)
+        <br />
+        <br />
+        let Q be queue.
+        <br />
+        Q.enqueue( s )
+        <br />
+        mark s as visited
+        <br />
+        <br />
+        while ( Q is not empty)
+        <br />
+        &nbsp;&nbsp;v = Q.dequeue( )
+        <br />
+        &nbsp;&nbsp;for all neighbors w of v in Graph G
+        <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;if w is not visited
+        <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q.enqueue( w )
+        <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mark w as visited
+        <br />
+        <br />
+        <div>G represents graph.</div>
+        <div>S represents source.</div>
+        <div>Q represents queue.</div>
+        <div>W represents neighbour.</div>
+      </div>
+
+      <div class="details">
+        <h2>Source</h2>
+        <img src="./assets/starting.jpg" height="35px" width="35px" alt="" />
+        <h2>Movement</h2>
+        <img src="./assets/cartoon.png" height="35px" width="35px" alt="" />
+        <h2>Destination</h2>
+        <img src="./assets/trophy.jpg" height="35px" width="35px" alt="" />
+        <h2>Reached</h2>
+        <img src="./assets/winner.png" height="35px" width="35px" alt="" />
+        <h2>Blocked</h2>
+        <img src="./assets/danger.jpg" height="35px" width="35px" alt="" />
+      </div>
+    </div>
+    <h2 class="status"></h2>
+    <div id="grid-options">
+      <button class="small-grid">Small Grid</button>
+      <button class="medium-grid">Medium Grid</button>
+      <button class="large-grid">Large Grid</button>
+
+      <button class="start-visual">Start Visualistaion</button>
+      <button class="reset">Clear Maze</button>
+    </div>
+
+    <script src="./bfs.js"></script>
+  </body>
+</html>
