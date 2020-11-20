@@ -6,8 +6,13 @@ const start = document.querySelector('.start-visual')
 const reset = document.querySelector('.reset')
 const status = document.querySelector('.status')
 const speed = document.querySelectorAll('.speed');
-let motionSpeed = 20;
+let motionSpeed = 20;//Transition speed global variable
 
+/*sRow = source-row
+  sCol = source-col
+  dRow = destination-row
+  dCol = destination-col
+*/
 let board
 let cols
 let source = null,
@@ -19,6 +24,8 @@ let dRow = -1,
 let dest = null
 
 
+
+//control transition speed 
 const changeSpeed = (x, event) => {
 	motionSpeed = 20
 	motionSpeed *= x;
@@ -32,6 +39,8 @@ const changeSpeed = (x, event) => {
 	}
 
 }
+
+//Generating grid type
 const gridGenerator = (gridType) => {
 	let nRows = 0
 	let nCols = 0
@@ -58,8 +67,6 @@ const gridGenerator = (gridType) => {
 	//Initialising new board
 	board = new Array(nRows)
 
-	//Initialising col
-
 	for (let i = 0; i < board.length; i++) {
 		board[i] = new Array(nCols)
 	}
@@ -79,10 +86,13 @@ const gridGenerator = (gridType) => {
 
 //Highlighting source and destination in board(when created).
 const activateColumns = (height, width) => {
+	//Maintainng three states with variable source,destination and blocke.
 	cols = document.querySelectorAll('.col')
 	for (let i = 0; i < cols.length; i++) {
 		cols[i].addEventListener('click', () => {
+
 			if (!source) {
+				//Marking cell as source
 				source = cols[i]
 				cols[i].style.background = "url('./assets/starting.jpg')"
 				cols[i].style.backgroundPosition = 'center'
@@ -93,7 +103,9 @@ const activateColumns = (height, width) => {
 				sCol = cols[i].getAttribute('col')
 				board[sRow][sCol] = 1
 			} else if (!destination) {
+				//Marking cell as destination
 
+				//Source and destination can't be same.
 				if (parseInt(cols[i].getAttribute("row")) == sRow &&
 					parseInt(cols[i].getAttribute("col")) == sCol) {
 					return;
@@ -108,6 +120,7 @@ const activateColumns = (height, width) => {
 				dCol = cols[i].getAttribute('col')
 				board[dRow][dCol] = 2
 			} else {
+				//source and destination can't be selected as blocked cell
 				if (parseInt(cols[i].getAttribute("row")) == sRow &&
 					parseInt(cols[i].getAttribute("col")) == sCol || parseInt(cols[i].getAttribute("row")) == dRow &&
 					parseInt(cols[i].getAttribute("col")) == dCol) {
@@ -120,7 +133,8 @@ const activateColumns = (height, width) => {
 				cols[i].style.backgroundPosition = 'center'
 				cols[i].style.backgroundRepeat = 'no-repeat'
 				cols[i].style.backgroundSize = `${height}px ${width}px`
-				board[blockRow][blockCol] = -1
+				//placing the wall or making cell blocked
+				board[blockRow][blockCol] = -1;
 			}
 		})
 	}
@@ -129,14 +143,11 @@ const createVisitedArray = () => {
 	let boardRow = board.length
 	let boardCol = board.length
 
+	//Initialising visited array with default value as null
 	let vis = new Array(boardRow)
 	for (let i = 0; i < vis.length; i++) vis[i] = new Array(boardCol).fill(false)
 
-	// for (let i = 0; i < vis.length; i++) {
-	//     for (let j = 0; j < vis.length; j++) {
-	//         console.log(vis[i][j]);
-	//     }
-	// }
+
 
 	return vis
 }
@@ -147,8 +158,9 @@ class Node {
 	}
 }
 
+//return true if the node is in boundary and not blocked
 const validNode = (vis, node) => {
-	console.log(node);
+
 	if (
 		node.row < 0 ||
 		node.row >= board.length ||
@@ -160,10 +172,9 @@ const validNode = (vis, node) => {
 		return false
 	}
 	if (vis[node.row][node.col]) {
-		// console.log(node.row, node.col + "true");
 		return false
 	}
-	// console.log(node);
+
 
 	return true
 }
@@ -178,8 +189,13 @@ const bfs = async () => {
 	while (queue.length > 0) {
 		let curr = queue.shift()
 
-		// console.log(curr.row, curr.col, vis[curr.row][curr.col]);
-
+		/*
+		Exploring all the directions
+		1.right
+		2.top
+		3.left
+		4.bottom
+		*/
 		let rightNode = new Node(parseInt(curr.row), parseInt(curr.col) + 1)
 		let topNode = new Node(parseInt(curr.row) + 1, parseInt(curr.col))
 		let leftNode = new Node(parseInt(curr.row), parseInt(curr.col) - 1)
@@ -187,14 +203,15 @@ const bfs = async () => {
 
 		if (validNode(vis, topNode)) {
 			if (board[topNode.row][topNode.col] == 2) {
+				//Setting custom styles if it reached destination cell.
 				destination.style.background = "url('./assets/winner.png')"
 				destination.style.backgroundPosition = 'center'
 				destination.style.backgroundRepeat = 'no-repeat'
 				destination.style.backgroundSize = '50px 50px'
 
-				// alert("Position found at" + curr.row + " " + curr.col);
 				return true;
 			} else {
+				//waiting for the fillColor to complete its execution.
 				await fillColor(topNode.row, topNode.col)
 				queue.push(topNode)
 				vis[topNode.row][topNode.col] = true
@@ -207,7 +224,6 @@ const bfs = async () => {
 				destination.style.backgroundRepeat = 'no-repeat'
 				destination.style.backgroundSize = '50px 50px'
 
-				// alert("Position found at" + curr.row + " " + curr.col);
 				return true;
 			}
 			else {
@@ -224,7 +240,7 @@ const bfs = async () => {
 				destination.style.backgroundRepeat = 'no-repeat'
 				destination.style.backgroundSize = '50px 50px'
 
-				// alert("Position found at" + curr.row + " " + curr.col);
+
 				return true;
 			}
 			else {
@@ -240,7 +256,6 @@ const bfs = async () => {
 				destination.style.backgroundRepeat = 'no-repeat'
 				destination.style.backgroundSize = '50px 50px'
 
-				// alert("Position found at" + curr.row + " " + curr.col);
 				return true;
 			}
 			else {
@@ -253,9 +268,12 @@ const bfs = async () => {
 	}
 	return false;
 }
+
 function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+//Asynchronous function to block execution while sleeping
 const fillColor = async (r, c) => {
 	console.log(c == 9)
 	await sleep(motionSpeed)
@@ -264,13 +282,14 @@ const fillColor = async (r, c) => {
 			parseInt(cols[i].getAttribute('row')) == r &&
 			parseInt(cols[i].getAttribute('col')) == c
 		) {
+			//Targetting the same box which is being transitioned
 			const elem = document.querySelector(
 				`.col-${parseInt(cols[i].getAttribute('row'))}-${parseInt(
 					cols[i].getAttribute('col')
 				)}`
 			)
 
-			// cols[i].style.backgroundColor = "#0a0349";
+
 			cols[i].style.background = "url('./assets/cartoon.png')"
 			cols[i].style.backgroundPosition = 'center'
 			cols[i].style.backgroundRepeat = 'no-repeat'
@@ -279,6 +298,8 @@ const fillColor = async (r, c) => {
 	}
 }
 
+
+//Generating grid from user demand
 smallGrid.addEventListener('click', () => {
 	; (source = null), (destination = null)
 	gridGenerator('small')
@@ -294,11 +315,15 @@ largeGrid.addEventListener('click', () => {
 	gridGenerator('large')
 })
 
+
+//Clearing the grid
 reset.addEventListener('click', () => {
 	; (source = null), (destination = null)
 	grid.innerHTML = ''
 })
 
+
+//Disabling button click while transition is being done.
 const disableControls = () => {
 	smallGrid.style.background = "grey";
 	smallGrid.disabled = true;
@@ -321,6 +346,7 @@ const disableControls = () => {
 	}
 }
 
+//Making button able to work after the transition is done/
 const activateControls = () => {
 
 	for (let i = 0; i < speed.length; i++) {
@@ -340,6 +366,8 @@ const activateControls = () => {
 	reset.style.background = "#0a0349";
 }
 
+
+//Call bfs only if source and destination are selected
 start.addEventListener('click', async () => {
 
 	disableControls();
