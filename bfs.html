@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>BFS ALGORITH VISUALISER</title>
   </head>
   <body>
     <link rel="stylesheet" href="./bfs.css" />
@@ -27,6 +27,11 @@
         while ( Q is not empty)
         <br />
         &nbsp;&nbsp;v = Q.dequeue( )
+        <br />
+        &nbsp;&nbsp;if v is the goal
+        <br />
+        &nbsp;&nbsp; &nbsp;&nbsp; return v;
+
         <br />
         &nbsp;&nbsp;for all neighbors w of v in Graph G
         <br />
@@ -58,10 +63,15 @@
     </div>
     <h2 class="status"></h2>
     <div id="grid-options">
-      <button class="speed slow" speed="25" onclick="changeSpeed(20,event)">
+      <button class="speed slow" speed="25" onclick="changeSpeed(25,event)">
         0.5 x
       </button>
-      <button class="speed medium" speed="5" onclick="changeSpeed(5,event)">
+      <button
+        class="speed medium"
+        style="box-shadow: 5px 5px grey"
+        speed="5"
+        onclick="changeSpeed(5,event)"
+      >
         1 x
       </button>
       <button class="speed fast" speed="0.5" onclick="changeSpeed(0.5,event)">
